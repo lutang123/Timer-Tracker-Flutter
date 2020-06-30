@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class User {
@@ -130,8 +129,8 @@ class Auth implements AuthBase {
   Future<void> signOut() async {
     final googleSignIn = GoogleSignIn();
     await googleSignIn.signOut();
-    final facebookLogin = FacebookLogin();
-    await facebookLogin.logOut();
+//    final facebookLogin = FacebookLogin();
+//    await facebookLogin.logOut();
     await _firebaseAuth.signOut();
   }
 }

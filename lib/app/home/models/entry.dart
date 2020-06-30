@@ -24,6 +24,7 @@ class Entry {
     return Entry(
       id: id,
       jobId: value['jobId'],
+      //covert back to DateTime
       start: DateTime.fromMillisecondsSinceEpoch(startMilliseconds),
       end: DateTime.fromMillisecondsSinceEpoch(endMilliseconds),
       comment: value['comment'],
@@ -33,7 +34,8 @@ class Entry {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'jobId': jobId,
-      'start': start.millisecondsSinceEpoch,
+      //we can store DateTime in firestire too, then no need to convert
+      'start': start.millisecondsSinceEpoch, //this convert to an integer
       'end': end.millisecondsSinceEpoch,
       'comment': comment,
     };

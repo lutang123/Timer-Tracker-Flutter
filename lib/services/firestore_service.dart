@@ -1,7 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/foundation.dart';
 
 class FirestoreService {
+  //adding private constructor, and the firestoreService can only be accessible
+  // by a singleton, the reason is that we may need to create multi classes
+  // to communicate with FireStore, but I don't want multi instance of FireStoreServices
+
+  //object of firestore services can not be created
   FirestoreService._();
   static final instance = FirestoreService._();
 
@@ -22,33 +27,15 @@ class FirestoreService {
 
   Stream<List<T>> collectionStream<T>({
     @required String path,
-    @required T builder(Map<String, dynamic> data, String documentID),
-    Query queryBuilder(Query query),
-    int sort(T lhs, T rhs),
+    @required T builder(Map<String, dynamic> data, documentID),
   }) {
-    Query query = Firestore.instance.collection(path);
-    if (queryBuilder != null) {
-      query = queryBuilder(query);
-    }
-    final Stream<QuerySnapshot> snapshots = query.snapshots();
-    return snapshots.map((snapshot) {
-      final result = snapshot.documents
-          .map((snapshot) => builder(snapshot.data, snapshot.documentID))
-          .where((value) => value != null)
-          .toList();
-      if (sort != null) {
-        result.sort(sort);
-      }
-      return result;
-    });
-  }
-
-  Stream<T> documentStream<T>({
-    @required String path,
-    @required T builder(Map<String, dynamic> data, String documentID),
-  }) {
-    final DocumentReference reference = Firestore.instance.document(path);
-    final Stream<DocumentSnapshot> snapshots = reference.snapshots();
-    return snapshots.map((snapshot) => builder(snapshot.data, snapshot.documentID));
+    final reference = Firestore.instance.collection(path);
+    final snapshots = reference.snapshots();
+    return snapshots.map((collectionSnapshot) => collectionSnapshot.documents
+        .map((documentSnapshot) => builder(
+              documentSnapshot.data,
+              documentSnapshot.documentID,
+            ))
+        .toList());
   }
 }

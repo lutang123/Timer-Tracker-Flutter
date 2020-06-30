@@ -6,16 +6,18 @@ import 'package:timetracker/common_widgets/platform_exception_alert_dialog.dart'
 import 'package:timetracker/services/database.dart';
 
 class EditJobPage extends StatefulWidget {
-  const EditJobPage({Key key, @required this.database, this.job})
+  const EditJobPage({Key key, @required this.database, @required this.job})
       : super(key: key);
   final Database database;
   final Job job;
 
   static Future<void> show(
-    BuildContext context, {
-    Database database,
-    Job job,
-  }) async {
+      //position argument
+      BuildContext context,
+      //named argument
+      {Database database,
+      Job job}) async {
+    //rootNavigator: true to ensure this page not have bottom nav bar
     await Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
         builder: (context) => EditJobPage(database: database, job: job),
@@ -45,21 +47,30 @@ class _EditJobPageState extends State<EditJobPage> {
 
   bool _validateAndSaveForm() {
     final form = _formKey.currentState;
+    //validate
     if (form.validate()) {
+      //save
       form.save();
       return true;
     }
     return false;
   }
 
+  //we can not directly save data into database because we don't have access
+  // to database from this level, we have to pass it from its parent
+  // which is job page
+
+  //we should also add FocusNode and loading state just like the email sign in page
   Future<void> _submit() async {
     if (_validateAndSaveForm()) {
       try {
         final jobs = await widget.database.jobsStream().first;
         final allNames = jobs.map((job) => job.name).toList();
+        //and this is to make sure when we edit job, we can keep the name
         if (widget.job != null) {
           allNames.remove(widget.job.name);
         }
+        //this is to make sure when we create job, we do not write the same name
         if (allNames.contains(_name)) {
           PlatformAlertDialog(
             title: 'Name already used',
@@ -67,9 +78,12 @@ class _EditJobPageState extends State<EditJobPage> {
             defaultActionText: 'OK',
           ).show(context);
         } else {
+          //we get the id from job in the firebase, if the job.id is null,
+          //we create a new one, otherwise we use the existing job.id
           final id = widget.job?.id ?? documentIdFromCurrentDate();
           final job = Job(id: id, name: _name, ratePerHour: _ratePerHour);
           await widget.database.setJob(job);
+          //pop to previous page
           Navigator.of(context).pop();
         }
       } on PlatformException catch (e) {
@@ -136,11 +150,14 @@ class _EditJobPageState extends State<EditJobPage> {
       ),
       TextFormField(
         decoration: InputDecoration(labelText: 'Rate per hour'),
+        //if we edit an existing job, initial value might be null, if we add new,
+        // then no initial value
         initialValue: _ratePerHour != null ? '$_ratePerHour' : null,
         keyboardType: TextInputType.numberWithOptions(
           signed: false,
           decimal: false,
         ),
+        // ?? means if it's null, then return 0
         onSaved: (value) => _ratePerHour = int.tryParse(value) ?? 0,
       ),
     ];

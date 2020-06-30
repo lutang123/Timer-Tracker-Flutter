@@ -27,7 +27,8 @@ class PlatformAlertDialog extends PlatformWidget {
           )
         : await showDialog<bool>(
             context: context,
-            barrierDismissible: false,
+            //this will make use to type other place to dismiss
+            barrierDismissible: true,
             builder: (context) => this,
           );
   }

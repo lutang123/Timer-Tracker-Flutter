@@ -8,6 +8,9 @@ class Job {
   final String name;
   final int ratePerHour;
 
+// add factory keyword when implementing a constructor that doesn't always
+// create a new instance of its class
+  //in our case, if the data us null, we return null rather than an object
   factory Job.fromMap(Map<String, dynamic> data, String documentId) {
     if (data == null) {
       return null;
