@@ -46,6 +46,7 @@ class EmailSignInModel with EmailAndPasswordValidators {
     return showErrorText ? invalidEmailErrorText : null;
   }
 
+  //because each field in this class is final, so we can only create a new methods to update
   EmailSignInModel copyWith({
     String email,
     String password,
@@ -54,6 +55,7 @@ class EmailSignInModel with EmailAndPasswordValidators {
     bool submitted,
   }) {
     return EmailSignInModel(
+      //?? conditional operator, if not null, return email, if null, return this.email
       email: email ?? this.email,
       password: password ?? this.password,
       formType: formType ?? this.formType,

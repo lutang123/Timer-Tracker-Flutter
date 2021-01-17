@@ -35,9 +35,11 @@ class SignInPage extends StatelessWidget {
 
   static Widget create(BuildContext context) {
     final auth = Provider.of<AuthBase>(context, listen: false);
+    //ChangeNotifierProvider is a special kind of provider that we can use with ValueNotifier<T>
     return ChangeNotifierProvider<ValueNotifier<bool>>(
       create: (_) => ValueNotifier<bool>(false),
       child: Consumer<ValueNotifier<bool>>(
+        //builder is called every time ValueNotifier.value changes; all descendant widget rebuilds
         builder: (_, isLoading, __) => Provider<SignInManager>(
           create: (_) => SignInManager(auth: auth, isLoading: isLoading),
           child: Consumer<SignInManager>(
@@ -89,6 +91,10 @@ class SignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //alternatively we can write:
+    //listen much NOT false, because SignInPage rebuilds when this value changes.
+    // final isLoading = Provider.of<ValueNotifier<bool>>(context);
+    //but this will have a lot of repetitive code, so we move isLoading to constructor and provider value with Consumer on top
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(

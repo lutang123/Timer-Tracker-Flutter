@@ -16,6 +16,11 @@ class EmailSignInFormStateful extends StatefulWidget
       _EmailSignInFormStatefulState();
 }
 
+//  //if we set up two variable like email and password and later assign value
+//  // to it, then it must be a stateful widget, because stateless widget needs
+//  //all variable to be final and initialized and we can not assign a new value to it.
+//  // so it has to be a stateful widget
+
 class _EmailSignInFormStatefulState extends State<EmailSignInFormStateful> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -168,6 +173,7 @@ class _EmailSignInFormStatefulState extends State<EmailSignInFormStateful> {
   }
 }
 
+///very original one without bloc
 //import 'package:flutter/material.dart';
 //import 'package:timetracker/common_widgets/form_submit_button.dart';
 //

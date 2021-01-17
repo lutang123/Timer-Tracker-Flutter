@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:rxdart/subjects.dart';
 import 'package:timetracker/app/sign_in/stateful_and_bloc/email_sign_in_model.dart';
 import 'package:timetracker/services/auth.dart';
 

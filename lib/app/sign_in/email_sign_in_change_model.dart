@@ -13,6 +13,7 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
     this.submitted = false,
   });
   final AuthBase auth;
+  // not final like Bloc
   String email;
   String password;
   EmailSignInFormType formType;
@@ -78,6 +79,7 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
 
   void updatePassword(String password) => updateWith(password: password);
 
+  //changed from copyWith
   void updateWith({
     String email,
     String password,
@@ -90,6 +92,7 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
     this.formType = formType ?? this.formType;
     this.isLoading = isLoading ?? this.isLoading;
     this.submitted = submitted ?? this.submitted;
+    //very important
     notifyListeners();
   }
 }

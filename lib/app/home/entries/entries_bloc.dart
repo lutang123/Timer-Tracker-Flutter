@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:timetracker/app/home/entries/entries_list_tile.dart';
 import 'package:timetracker/app/home/job_entries/format.dart';
 import 'package:timetracker/app/home/models/entry.dart';
 import 'package:timetracker/app/home/models/job.dart';
 import 'package:timetracker/services/database.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'daily_jobs_details.dart';
 import 'entry_job.dart';
@@ -15,7 +15,7 @@ class EntriesBloc {
 
   /// combine List<Job>, List<Entry> into List<EntryJob>
   // Observable isn't available in RxDart 2.4, need update
-  Stream<List<EntryJob>> get _allEntriesStream => Observable.combineLatest2(
+  Stream<List<EntryJob>> get _allEntriesStream => Rx.combineLatest2(
         database.entriesStream(),
         database.jobsStream(),
         _entriesJobsCombiner,

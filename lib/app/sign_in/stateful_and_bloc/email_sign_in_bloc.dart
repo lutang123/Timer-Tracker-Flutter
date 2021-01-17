@@ -12,6 +12,8 @@ class EmailSignInBloc {
   final StreamController<EmailSignInModel> _modelController =
       StreamController<EmailSignInModel>();
   Stream<EmailSignInModel> get modelStream => _modelController.stream;
+  //this model will represent the latest value of our steam
+  // initialize model with some default value
   EmailSignInModel _model = EmailSignInModel();
 
   void dispose() {
@@ -50,6 +52,7 @@ class EmailSignInBloc {
 
   void updatePassword(String password) => updateWith(password: password);
 
+  //every time we call updateWith, we pass parameters and use these to create a copy of our model
   void updateWith({
     String email,
     String password,

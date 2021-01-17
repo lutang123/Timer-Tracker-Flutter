@@ -16,6 +16,7 @@ class EmailSignInPage extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Card(
 //            child: EmailSignInFormStateful(),
+//            child: EmailSignInFormBlocBased.create(context),
             child: EmailSignInFormChangeNotifier.create(context),
           ),
         ),
